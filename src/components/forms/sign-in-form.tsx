@@ -28,38 +28,28 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
-const formSchema = z
-    .object({
-        name: z.string().min(1, 'Name is required'),
-        email: z.email('Invalidate Email'),
-        password: z.string().min(8, 'Password must be at least 8 characters'),
-        confirmPassword: z.string(),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-        path: ['confirmPassword'],
-        message: 'Passwords do not match',
-    });
+const formSchema = z.object({
+    email: z.email('Invalidate Email'),
+    password: z.string().min(8, 'Password must be at least 8 characters'),
+});
 
-export const SignUpForm = () => {
+export const SignInForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: '',
             email: '',
             password: '',
-            confirmPassword: '',
         },
     });
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         setIsLoading(true);
 
-        const res = await authClient.signUp.email({
+        const res = await authClient.signIn.email({
             email: data.email,
-            name: data.name,
             password: data.password,
         });
 
@@ -105,43 +95,10 @@ export const SignUpForm = () => {
                         />
                         <FormField
                             control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            placeholder="John Doe"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            type="password"
-                                            placeholder="********"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="confirmPassword"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Confirm Password</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
@@ -162,14 +119,14 @@ export const SignUpForm = () => {
                             form="sign-up-form"
                             loading={isLoading}
                         >
-                            Sign Up
+                            Sign In
                         </Button>
                     </div>
                     <Link
-                        href="/sign-in"
+                        href="/sign-up"
                         className={cn(buttonVariants({ variant: 'link' }))}
                     >
-                        Already have an account? Sign In
+                        Don&apos;t have an account? Sign Up
                     </Link>
                     <div className="flex items-center gap-4 w-full ">
                         <Separator className="shrink bg-gray-300" />
