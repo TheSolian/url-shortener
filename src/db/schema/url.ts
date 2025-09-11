@@ -1,5 +1,4 @@
 import { user } from '@/db/schema/auth';
-import { sql } from 'drizzle-orm';
 import { index, integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const urls = pgTable(
