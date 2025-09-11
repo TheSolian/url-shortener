@@ -59,7 +59,7 @@ export const ShortenUrlForm = () => {
     };
 
     return (
-        <Card className="min-w-xl max-w-xl">
+        <Card className="md:min-w-xl md:max-w-xl">
             <CardHeader>
                 <CardTitle>
                     <h1 className="text-2xl font-bold">Shorten URL</h1>
