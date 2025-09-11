@@ -4,8 +4,10 @@ import { urls } from '@/db/schema/url';
 import { eq } from 'drizzle-orm';
 import { redirect } from 'next/navigation';
 
-export default async function Page({ params }: { params: { code: string } }) {
-    const { code } = params;
+export default async function Page(context: {
+    params: Promise<{ code: string }>;
+}) {
+    const { code } = await context.params;
 
     let isLoading = true;
     let url: string | null = null;
