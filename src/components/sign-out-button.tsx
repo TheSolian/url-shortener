@@ -2,13 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { authClient } from '@/lib/auth-client';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 type Props = {
     variant: React.ComponentProps<typeof Button>['variant'];
 };
 
 export const SignOutButton = ({ variant }: Props) => {
+    const pathname = usePathname();
     const router = useRouter();
 
     return (
@@ -17,7 +18,7 @@ export const SignOutButton = ({ variant }: Props) => {
             className="cursor-pointer"
             onClick={async () => {
                 await authClient.signOut();
-                router.push('/sign-in');
+                router.push(pathname !== '/' ? '/sign-in' : '/');
             }}
         >
             Sign Out
