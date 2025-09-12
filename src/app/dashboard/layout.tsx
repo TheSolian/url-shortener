@@ -38,7 +38,7 @@ export default async function Layout({
                         <DashboardBreadcrumb />
                     </div>
                 </header>
-                <main>{children}</main>
+                <>{children}</>
             </SidebarInset>
         </SidebarProvider>
     );

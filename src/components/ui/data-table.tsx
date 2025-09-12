@@ -15,15 +15,18 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { LoadingSpinner } from '@/components/loading-spinner';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    pending: boolean;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    pending,
 }: DataTableProps<TData, TValue>) {
     const table = useReactTable({
         data,
@@ -70,6 +73,17 @@ export function DataTable<TData, TValue>({
                                 ))}
                             </TableRow>
                         ))
+                    ) : pending ? (
+                        <TableRow>
+                            <TableCell
+                                colSpan={columns.length}
+                                className="h-24 text-center"
+                            >
+                                <div className="flex items-center justify-center">
+                                    <LoadingSpinner className="fill-accent-foreground" />
+                                </div>
+                            </TableCell>
+                        </TableRow>
                     ) : (
                         <TableRow>
                             <TableCell
