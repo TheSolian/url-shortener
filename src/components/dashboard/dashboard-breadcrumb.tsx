@@ -22,8 +22,10 @@ export const DashboardBreadcrumb = () => {
             <BreadcrumbList>
                 {breadcrumbItems.map((item, index) => {
                     const href =
-                        '/dashboard/' +
-                        breadcrumbItems.slice(0, index + 1).join('/');
+                        index === 0
+                            ? '/dashboard'
+                            : '/dashboard/' +
+                              breadcrumbItems.slice(0, index + 1).join('/');
                     const isLast = index === breadcrumbItems.length - 1;
 
                     return (
