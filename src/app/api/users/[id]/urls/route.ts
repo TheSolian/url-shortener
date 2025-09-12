@@ -1,7 +1,7 @@
 import { db } from '@/db';
 import { urls } from '@/db/schema/url';
 import { auth } from '@/lib/auth';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -29,6 +29,7 @@ export const DELETE = async (
     context: { params: Promise<{ id: string }> }
 ) => {
     const { id } = await context.params;
+    const { ids } = (await req.json()) as { ids?: string[] };
 
     const session = await auth.api.getSession({
         headers: await headers(),
@@ -39,7 +40,12 @@ export const DELETE = async (
     }
 
     try {
-        const res = await db.delete(urls).where(eq(urls.userId, id));
+        let res;
+        if (ids) {
+            res = await db.delete(urls).where(inArray(urls.id, ids));
+        } else {
+            res = await db.delete(urls).where(eq(urls.userId, id));
+        }
 
         if (res.rowCount === 0) {
             return NextResponse.json(
@@ -54,5 +60,5 @@ export const DELETE = async (
         );
     }
 
-    return NextResponse.json({ message: 'All URLs deleted' }, { status: 200 });
+    return NextResponse.json({ message: 'URLs deleted' }, { status: 200 });
 };

@@ -29,6 +29,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 type Props = {
     trigger?: {
@@ -61,6 +62,9 @@ export const ShortenUrlDialog = ({ trigger }: Props) => {
             queryClient.invalidateQueries({ queryKey: ['urls'] });
             form.reset();
             setOpen(false);
+            toast.success('URL shortened', {
+                position: 'top-center',
+            });
         },
     });
 

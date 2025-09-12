@@ -98,12 +98,24 @@ export const urlTableColumns: ColumnDef<TableUrl>[] = [
     {
         id: 'actions',
         header: ({ table }) => {
-            if (!table.getIsAllRowsSelected()) return <></>;
+            const ids = table
+                .getSelectedRowModel()
+                .rows.map((row) => row.original.id);
 
-            return <UrlAllActions />;
+            if (
+                !table.getIsAllRowsSelected() &&
+                !table.getIsSomePageRowsSelected()
+            )
+                return <></>;
+
+            return <UrlMultipleActions ids={ids} />;
         },
         cell: ({ row, table }) => {
-            if (table.getIsAllRowsSelected()) return <></>;
+            if (
+                table.getIsAllRowsSelected() ||
+                table.getIsSomePageRowsSelected()
+            )
+                return <></>;
 
             return <UrlRowActions tableUrl={row.original} />;
         },
@@ -142,6 +154,9 @@ const UrlRowActions = ({ tableUrl }: { tableUrl: TableUrl }) => {
         },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey });
+            toast.success('URL deleted', {
+                position: 'top-center',
+            });
         },
     });
 
@@ -173,21 +188,29 @@ const UrlRowActions = ({ tableUrl }: { tableUrl: TableUrl }) => {
     );
 };
 
-const UrlAllActions = () => {
+const UrlMultipleActions = ({ ids }: { ids: string[] }) => {
     const queryClient = useQueryClient();
     const queryKey = ['urls'];
     const session = authClient.useSession();
 
     const { mutate: deleteUrls } = useMutation({
         mutationFn: async () => {
-            await api.delete(`users/${session?.data?.user.id}/urls`);
+            await api.delete(`users/${session?.data?.user.id}/urls`, {
+                data: {
+                    ids,
+                },
+            });
         },
         onMutate: async () => {
             await queryClient.cancelQueries({ queryKey });
 
             const previousUrls = queryClient.getQueryData<TableUrl[]>(queryKey);
 
-            queryClient.setQueryData(queryKey, [] as TableUrl[]);
+            queryClient.setQueryData(
+                queryKey,
+                (old: TableUrl[]) =>
+                    old?.filter((item) => !ids.includes(item.id)) || []
+            );
 
             return { previousData: previousUrls };
         },
@@ -202,6 +225,9 @@ const UrlAllActions = () => {
         },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey });
+            toast.success('URLs deleted', {
+                position: 'top-center',
+            });
         },
     });
 
@@ -215,7 +241,7 @@ const UrlAllActions = () => {
             <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => deleteUrls()}>
                     <Trash2Icon />
-                    Delete All
+                    Delete Selected
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
