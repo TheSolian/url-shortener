@@ -2,29 +2,40 @@
 
 import { Button } from '@/components/ui/button';
 import { authClient } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
 
 export const SocialSignIn = () => {
-    const handleSignInWithPasskey = async () => {
-        const res = await authClient.signIn.passkey({
-            email: 'levin.gsell@bluewin.ch',
-            autoFill: true,
+    const router = useRouter();
+
+    const handleSignInWithSocial = async (provider: string) => {
+        const { error } = await authClient.signIn.social({
+            provider,
         });
 
-        console.log(res);
+        if (error) {
+            console.log(error);
+            return;
+        }
+
+        router.push('/');
     };
 
     return (
         <div className="flex flex-col gap-2 w-full">
-            <Button variant="outline" className="grow cursor-pointer">
+            <Button
+                variant="outline"
+                className="grow cursor-pointer"
+                onClick={() => handleSignInWithSocial('github')}
+            >
                 Sign In with Github
             </Button>
-            <Button
+            {/* <Button
                 variant="outline"
                 className="grow cursor-pointer"
                 onClick={handleSignInWithPasskey}
             >
                 Sign In with Passkey
-            </Button>
+            </Button> */}
         </div>
     );
 };

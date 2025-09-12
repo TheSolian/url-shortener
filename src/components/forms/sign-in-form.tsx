@@ -55,10 +55,12 @@ export const SignInForm = () => {
 
         if (res.error) {
             console.log(res.error);
-            alert(res.error);
+            setIsLoading(false);
+            return;
         }
 
         setIsLoading(false);
+
         router.push('/');
     };
 

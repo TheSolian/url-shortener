@@ -1,43 +1,16 @@
 'use client';
 
-import { LoadingSpinner } from '@/components/loading-spinner';
-import { Url } from '@/db/schema/url';
-import { authClient } from '@/lib/auth-client';
-import { api } from '@/lib/axios';
-import { useQuery } from '@tanstack/react-query';
-
 export default function Page() {
-    const session = authClient.useSession();
-
-    const { data, isLoading } = useQuery<Url[]>({
-        queryKey: ['urls'],
-        queryFn: async () => {
-            const res = await api.get(`/users/${session.data?.user.id}/urls`);
-            return res.data;
-        },
-        enabled: !!session.data?.user.id,
-    });
-
     return (
-        <div>
-            {isLoading ? (
-                <LoadingSpinner />
-            ) : (
-                <div className="space-y-4">
-                    {data?.map((url) => (
-                        <div
-                            key={url.id}
-                            className="bg-muted p-4 rounded-md max-w-sm"
-                        >
-                            <div>{url.url}</div>
-                            <div>
-                                {process.env.NEXT_PUBLIC_APPLICATION_URL}/
-                                {url.code}
-                            </div>
-                        </div>
-                    ))}
+        <>
+            <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                    <div className="bg-muted/50 aspect-video rounded-xl" />
+                    <div className="bg-muted/50 aspect-video rounded-xl" />
+                    <div className="bg-muted/50 aspect-video rounded-xl" />
                 </div>
-            )}
-        </div>
+                <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+            </div>
+        </>
     );
 }

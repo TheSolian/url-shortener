@@ -16,6 +16,11 @@ export default async function Page(context: {
         const result = await db.select().from(urls).where(eq(urls.code, code));
         url = result[0].url;
         isLoading = false;
+
+        await db
+            .update(urls)
+            .set({ uses: result[0].uses + 1 })
+            .where(eq(urls.id, result[0].id));
     } catch {
         isLoading = false;
     }

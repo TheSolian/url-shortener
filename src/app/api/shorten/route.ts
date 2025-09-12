@@ -12,10 +12,6 @@ export const POST = async (req: NextRequest) => {
         headers: await headers(),
     });
 
-    if (!session) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const code = crypto.randomBytes(6).toString('base64url');
 
     try {
@@ -23,7 +19,7 @@ export const POST = async (req: NextRequest) => {
             id: crypto.randomUUID(),
             code,
             url,
-            userId: session.user.id,
+            userId: session?.user.id ?? null,
         });
     } catch {
         return NextResponse.json(
@@ -33,6 +29,6 @@ export const POST = async (req: NextRequest) => {
     }
 
     return NextResponse.json({
-        url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/${code}`,
+        url: `${process.env.NEXT_PUBLIC_APPLICATION_URL}/${code}`,
     });
 };

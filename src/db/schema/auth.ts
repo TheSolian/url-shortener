@@ -86,3 +86,5 @@ export const passkey = pgTable('passkey', {
     createdAt: timestamp('created_at'),
     aaguid: text('aaguid'),
 });
+
+export type User = typeof user.$inferSelect;

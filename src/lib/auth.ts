@@ -15,13 +15,20 @@ export const auth = betterAuth({
         enabled: true,
         requireEmailVerification: false,
     },
+    socialProviders: {
+        github: {
+            enabled: true,
+            clientId: process.env.GITHUB_CLIENT_ID as string,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+        },
+    },
     user: {
         deleteUser: {
             enabled: true,
         },
     },
     plugins: [
-        // haveIBeenPwned(),
+        haveIBeenPwned(),
         passkey({
             rpID: 'localhost',
             rpName: 'Localhost',

@@ -18,30 +18,29 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { api } from '@/lib/axios';
+import {
+    ShortenUrlSchema,
+    shortenUrlSchema,
+} from '@/schemas/shorten-url-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { ArrowRightIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-
-const formSchema = z.object({
-    url: z.url(),
-});
 
 export const ShortenUrlForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [shortenedUrl, setShortenedUrl] = useState<string | null>(null);
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<ShortenUrlSchema>({
+        resolver: zodResolver(shortenUrlSchema),
         defaultValues: {
             url: '',
         },
     });
 
     const { mutate } = useMutation({
-        mutationFn: async (data: z.infer<typeof formSchema>) => {
+        mutationFn: async (data: ShortenUrlSchema) => {
             const res = await api.post('/shorten', data);
             return res.data;
         },
@@ -50,7 +49,7 @@ export const ShortenUrlForm = () => {
         },
     });
 
-    const onSubmit = (data: z.infer<typeof formSchema>) => {
+    const onSubmit = (data: ShortenUrlSchema) => {
         setIsLoading(true);
 
         mutate(data);
@@ -109,7 +108,10 @@ export const ShortenUrlForm = () => {
                     <Button
                         variant="link"
                         className="cursor-pointer"
-                        onClick={() => setShortenedUrl(null)}
+                        onClick={() => {
+                            setShortenedUrl(null);
+                            form.reset();
+                        }}
                     >
                         Shorten another URL
                     </Button>

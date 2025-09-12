@@ -23,3 +23,36 @@ export const GET = async (
 
     return NextResponse.json(result);
 };
+
+export const DELETE = async (
+    req: NextRequest,
+    context: { params: Promise<{ id: string }> }
+) => {
+    const { id } = await context.params;
+
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    try {
+        const res = await db.delete(urls).where(eq(urls.userId, id));
+
+        if (res.rowCount === 0) {
+            return NextResponse.json(
+                { error: 'No URLs found for user' },
+                { status: 404 }
+            );
+        }
+    } catch {
+        return NextResponse.json(
+            { error: 'Internal server error' },
+            { status: 500 }
+        );
+    }
+
+    return NextResponse.json({ message: 'All URLs deleted' }, { status: 200 });
+};

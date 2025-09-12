@@ -8,9 +8,9 @@ export const urls = pgTable(
         url: text('url').notNull(),
         code: text('code').notNull().unique(),
         uses: integer('uses').default(0).notNull(),
-        userId: text('user_id')
-            .notNull()
-            .references(() => user.id, { onDelete: 'cascade' }),
+        userId: text('user_id').references(() => user.id, {
+            onDelete: 'cascade',
+        }),
         createdAt: timestamp('created_at').defaultNow().notNull(),
         updatedAt: timestamp('updated_at')
             .defaultNow()

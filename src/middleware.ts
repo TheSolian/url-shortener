@@ -3,8 +3,8 @@ import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 const AUTH_ROUTES = ['/sign-in', '/sign-up'];
-const PUBLIC_ROUTES = ['/'];
-const PRIVATE_ROUTES = ['/dashboard'];
+const PUBLIC_ROUTES = ['/', '/shorten'];
+const PRIVATE_ROUTES = ['/dashboard', '/dashboard/account'];
 
 export default async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
