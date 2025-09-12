@@ -6,9 +6,10 @@ import { usePathname, useRouter } from 'next/navigation';
 
 type Props = {
     variant: React.ComponentProps<typeof Button>['variant'];
+    refresh?: boolean;
 };
 
-export const SignOutButton = ({ variant }: Props) => {
+export const SignOutButton = ({ variant, refresh }: Props) => {
     const pathname = usePathname();
     const router = useRouter();
 
@@ -19,6 +20,9 @@ export const SignOutButton = ({ variant }: Props) => {
             onClick={async () => {
                 await authClient.signOut();
                 router.push(pathname !== '/' ? '/sign-in' : '/');
+                if (refresh && pathname === '/') {
+                    router.refresh();
+                }
             }}
         >
             Sign Out

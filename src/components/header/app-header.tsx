@@ -13,12 +13,12 @@ export const AppHeader = async () => {
     });
 
     return (
-        <div className="sticky h-16 bg-white dark:bg-primary-foreground border-b flex items-center justify-between px-8">
+        <div className="sticky h-16 bg-white dark:bg-primary-foreground border-b flex items-center justify-between px-2 mx:px-8">
             <Logo />
             <div>
                 {session ? (
-                    <div>
-                        <SignOutButton variant="link" />
+                    <div className="flex">
+                        <SignOutButton variant="link" refresh={true} />
                         <Link
                             href="/dashboard"
                             className={cn(

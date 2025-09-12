@@ -40,7 +40,7 @@ const sidebarItems = [
 export const DashboardSidebar = ({
     ...props
 }: React.ComponentProps<typeof Sidebar>) => {
-    const { open } = useSidebar();
+    const { open, setOpenMobile } = useSidebar();
     const pathname = usePathname();
 
     const session = authClient.useSession();
@@ -71,17 +71,18 @@ export const DashboardSidebar = ({
                     <SidebarMenu>
                         {sidebarItems.map((item) => (
                             <SidebarMenuItem key={item.href}>
-                                <Link href={item.href}>
-                                    <SidebarMenuButton
-                                        className={cn({
-                                            'bg-sidebar-accent':
-                                                pathname === item.href,
-                                        })}
+                                <SidebarMenuButton
+                                    asChild
+                                    isActive={pathname === item.href}
+                                >
+                                    <Link
+                                        href={item.href}
+                                        onClick={() => setOpenMobile(false)}
                                     >
                                         <item.icon />
                                         {item.label}
-                                    </SidebarMenuButton>
-                                </Link>
+                                    </Link>
+                                </SidebarMenuButton>
                             </SidebarMenuItem>
                         ))}
                     </SidebarMenu>

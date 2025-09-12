@@ -24,8 +24,8 @@ export const AccountDetailsSection = ({ user }: Props) => {
                     </AvatarFallback>
                 </Avatar>
                 <div className="space-y-1">
-                    <h1 className="text-2xl font-bold">{user.name}</h1>
-                    <p className="text-sm text-muted-foreground">
+                    <h1 className="text-4xl font-bold">{user.name}</h1>
+                    <p className="text-md text-muted-foreground">
                         {user.email}
                     </p>
                 </div>

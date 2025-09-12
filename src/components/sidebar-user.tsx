@@ -7,6 +7,7 @@ import {
     LogOut,
     SettingsIcon,
     Sparkles,
+    User2Icon,
 } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -29,6 +30,7 @@ import { authClient } from '@/lib/auth-client';
 import { User } from 'better-auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { WorkInProgressBadge } from '@/components/debug/work-in-progress-badge';
 
 export const SidebarUser = ({ user }: { user: User }) => {
     const { isMobile } = useSidebar();
@@ -91,27 +93,24 @@ export const SidebarUser = ({ user }: { user: User }) => {
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
+                        {/* <DropdownMenuGroup>
                             <DropdownMenuItem>
                                 <Sparkles />
                                 Upgrade to Pro
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
+                        <DropdownMenuSeparator /> */}
                         <DropdownMenuGroup>
                             <DropdownMenuItem asChild>
                                 <Link href="/dashboard/account">
-                                    <BadgeCheck />
+                                    <User2Icon />
                                     Account
                                 </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <CreditCard />
-                                Billing
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
+                            <DropdownMenuItem disabled>
                                 <SettingsIcon />
                                 Settings
+                                <WorkInProgressBadge />
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />

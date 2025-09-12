@@ -2,7 +2,7 @@ import { ShortenUrlForm } from '@/components/forms/shorten-url-form';
 
 export default function Page() {
     return (
-        <div className="flex justify-center pt-20">
+        <div className="flex justify-center pt-20 px-2 md:px-0">
             <ShortenUrlForm />
         </div>
     );
