@@ -11,18 +11,19 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarMenuSkeleton,
+    SidebarSeparator,
     useSidebar,
 } from '@/components/ui/sidebar';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { HomeIcon, LinkIcon } from 'lucide-react';
+import { ArrowLeftIcon, LayoutDashboardIcon, LinkIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const sidebarItems = [
     {
         href: '/dashboard',
-        icon: HomeIcon,
+        icon: LayoutDashboardIcon,
         label: 'Dashboard',
     },
     {
@@ -48,7 +49,11 @@ export const DashboardSidebar = ({
     const user = session?.data?.user;
 
     return (
-        <Sidebar variant="inset" {...props} collapsible="icon">
+        <Sidebar
+            {...props}
+            collapsible="icon"
+            // className="md:flex md:items-center"
+        >
             <SidebarHeader>
                 <Link href="/">
                     <SidebarMenuButton
@@ -67,6 +72,20 @@ export const DashboardSidebar = ({
                 </Link>
             </SidebarHeader>
             <SidebarContent>
+                <SidebarSeparator className="mx-0" />
+                <SidebarGroup className="py-0">
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton asChild>
+                                <Link href="/">
+                                    <ArrowLeftIcon />
+                                    Back to home
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarGroup>
+                <SidebarSeparator className="mx-0" />
                 <SidebarGroup>
                     <SidebarMenu>
                         {sidebarItems.map((item) => (
