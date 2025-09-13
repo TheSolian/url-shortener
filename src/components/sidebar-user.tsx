@@ -1,15 +1,8 @@
 'use client';
 
-import {
-    BadgeCheck,
-    ChevronsUpDown,
-    CreditCard,
-    LogOut,
-    SettingsIcon,
-    Sparkles,
-    User2Icon,
-} from 'lucide-react';
+import { ChevronsUpDown, LogOut, SettingsIcon, User2Icon } from 'lucide-react';
 
+import { WorkInProgressBadge } from '@/components/debug/work-in-progress-badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     DropdownMenu,
@@ -28,9 +21,8 @@ import {
 } from '@/components/ui/sidebar';
 import { authClient } from '@/lib/auth-client';
 import { User } from 'better-auth';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { WorkInProgressBadge } from '@/components/debug/work-in-progress-badge';
+import { useRouter } from 'next/navigation';
 
 export const SidebarUser = ({ user }: { user: User }) => {
     const { isMobile } = useSidebar();
